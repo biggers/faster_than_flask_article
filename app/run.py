@@ -1,6 +1,3 @@
-import os
-from contextlib import contextmanager
-
 import asyncpg
 from quart import Quart
 
@@ -14,8 +11,9 @@ def create_app():
 
     @app.before_first_request
     async def create_db():
-        dsn = 'postgres://dvdrental:dvdrental@0.0.0.0:5432/dvdrental'
-        app.pool = await asyncpg.create_pool(dsn, max_size=20)  #os.environ['DB_DSN'])
+        dsn = "postgresql://dvdrental@localhost:5432/dvdrental?password=dvdrental"  # noqa: E501
+        # (or) os.environ['DB_DSN'])
+        app.pool = await asyncpg.create_pool(dsn, max_size=20)
 
     app.register_blueprint(films_blueprint)
     app.register_blueprint(reviews_blueprint)
